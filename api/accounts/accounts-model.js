@@ -10,13 +10,9 @@ const getById = id => {
   .first()
 }
 
-function create (account) {
-  if(account){
-    return db("accounts").insert(account)
-    .then(([id]) => {
-      return getById(id)
-    })
-  }
+async function create (account) {
+    const [id] = await db("accounts").insert(account)
+    return getById(id)
 }
 
 async function updateById (id, account){
@@ -24,10 +20,8 @@ async function updateById (id, account){
   return getById(id)
 }
 
-async function deleteById (id) {
-  const deletedAccount = await getById(id)
-  await db("accounts").where("id", id).delete()
-  return deletedAccount
+function deleteById (id) {
+    return db("accounts").where("id", id).del()
 }
 
 module.exports = {
